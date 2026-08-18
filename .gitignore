@@ -1,0 +1,24 @@
+# Virtual environments
+.venv/
+.venv-1/
+venv/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build / packaging artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+
+# Test / tooling caches
+.pytest_cache/
+.hypothesis/
+.mypy_cache/
+.ruff_cache/
+
+# OS cruft
+.DS_Store
