@@ -4,12 +4,17 @@ import pytest
 from harness.fake_plugin import FakeGainPlugin
 from harness.render import PluginRenderer
 
+# Shared fixtures for all tests under tests/.
+
+
 @pytest.fixture
 def sample_rate():
     return 48_000
 
+
 @pytest.fixture
 def test_signal(sample_rate):
+    """1 second, -12 dBFS (0.25 peak) sine wave at 1 kHz, shaped (1, samples) for PluginRenderer."""
     duration = 1.0  # seconds
     frequency = 1_000.0
 
@@ -21,9 +26,12 @@ def test_signal(sample_rate):
 
     return signal[np.newaxis, :]
 
+
 @pytest.fixture
 def plugin():
+    """Doubles amplitude (+6 dB); used to verify PluginRenderer applies processing correctly."""
     return FakeGainPlugin(gain=2.0)
+
 
 @pytest.fixture
 def renderer(plugin):

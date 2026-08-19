@@ -1,5 +1,8 @@
+"""Behavioral tests for PluginRenderer, driven against FakeGainPlugin as a stand-in processor."""
+
 import numpy as np
 import pytest
+
 
 def test_plugin_renders_finite_audio(
         renderer,
@@ -62,6 +65,7 @@ def test_render_is_deterministic(
     )
 
 
+# reset=True/False controls whether processor state carries over between renders.
 def test_render_resets_plugin(
         renderer,
         plugin,
@@ -99,6 +103,7 @@ def test_render_can_skip_reset(
 
     assert plugin.reset_count == 1
 
+# Input validation: render() should reject malformed audio before it reaches the processor.
 def test_renderer_rejects_mono_1d_array(
         renderer, sample_rate,
 ):
