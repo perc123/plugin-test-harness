@@ -19,6 +19,12 @@ class PluginRenderer:
                buffer_size: int,
                reset: bool = True,
             ) -> RenderResult:
+            if audio.ndim != 2:
+                raise ValueError("Audio must be a 2D array with shape (channels, samples).")
+
+            if not np.isfinite(audio).all():
+                raise ValueError("Audio contains non-finite values.")
+
             if reset:
                  self.processor.reset()
 
