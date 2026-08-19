@@ -3,6 +3,8 @@ import pytest
 
 from harness.fake_plugin import FakeGainPlugin
 from harness.render import PluginRenderer
+from pedalboard import Pedalboard, Gain
+from harness.pedalboard_processor import PedalboardProcessor
 
 # Shared fixtures for all tests under tests/.
 
@@ -36,3 +38,10 @@ def plugin():
 @pytest.fixture
 def renderer(plugin):
     return PluginRenderer(plugin)
+
+@pytest.fixture
+def pedalboard_renderer():
+    """Wraps a Pedalboard with a Gain plugin, used to verify PluginRenderer works with real audio plugins."""
+    board = Pedalboard([Gain(gain_db=6.0)])  # +6 dB gain
+    processor = PedalboardProcessor(board)
+    return PluginRenderer(processor)
