@@ -18,19 +18,19 @@ def sine(
         Keeping this convention in one place prevents individual tests from accidentally using incompatible channel/signal formats.
     """
     if frequency <= 0:
-        raise ValueError("Frequency must be greater than 0")
+        raise ValueError("frequency must be greater than 0")
 
     if duration <= 0:
-        raise ValueError("Duration must be greater than 0")
+        raise ValueError("duration must be greater than 0")
 
     if sample_rate <= 0:
-        raise ValueError("Sample rate must be greater than 0")
+        raise ValueError("sample_rate must be greater than 0")
 
     if channels <= 0:
-        raise ValueError("Channels must be greater than 0")
+        raise ValueError("channels must be greater than 0")
 
     if amplitude < 0:
-        raise ValueError("Amplitude must not be negative")
+        raise ValueError("amplitude must not be negative")
 
     sample_count = int(round(duration * sample_rate))
 
@@ -65,7 +65,7 @@ def impulse(
     if not 0 <= position < length:
         raise ValueError("position must be withing the signal")
 
-    signal = np.zeros((channels, length), dype=np.float64)
+    signal = np.zeros((channels, length), dtype=np.float64)
 
     # The impulse is places at an explicitly controlled sample index.
     # This makes latency measurements reproducible later.
@@ -83,7 +83,7 @@ def silence(
         raise ValueError("duration must be greater than 0")
 
     if sample_rate <= 0:
-        raise ValueError("sample rate must be greater than 0")
+        raise ValueError("sample_rate must be greater than 0")
 
     if channels <= 0:
         raise ValueError("channels must be greater than 0")
@@ -92,5 +92,40 @@ def silence(
 
     return np.zeros(
         (channels, sample_count),
-        stype=np.float64,
+        dtype=np.float64,
     )
+
+def white_noise(
+    duration: float,
+    sample_rate: int,
+    amplitude: float = 1.0,
+    channels : int = 1,
+    seed: int = 0,
+) -> np.ndarray:
+     """Generate reproducible white noise.
+     
+     The seed is explicit so that a failing test can be reproduced exacctly."""
+     if duration <= 0:
+          raise ValueError("duration must be greater than 0")
+
+     if sample_rate <= 0:
+          raise ValueError("sample_rate must be greater than 0")
+
+     if amplitude < 0:
+          raise ValueError("amplitude must not be negative")
+
+     if channels <= 0:
+          raise ValueError("channels must be greater than 0")
+
+     sample_count = int(round(duration * sample_rate))
+
+     rng = np.random.default_rng(seed)
+
+     # Generate each channel independently. Using an explicit Generator keeps this function isolated from global NumPy RNG state.
+     noise = rng.uniform(
+          low=-amplitude,
+          high=amplitude,
+          size=(channels, sample_count),
+     )
+
+     return noise

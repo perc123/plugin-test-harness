@@ -5,6 +5,7 @@ from harness.fake_plugin import FakeGainPlugin
 from harness.render import PluginRenderer
 from pedalboard import Pedalboard, Gain
 from harness.pedalboard_processor import PedalboardProcessor
+from harness.signals import sine
 
 # Shared fixtures for all tests under tests/.
 
@@ -45,3 +46,12 @@ def pedalboard_renderer():
     board = Pedalboard([Gain(gain_db=6.0)])  # +6 dB gain
     processor = PedalboardProcessor(board)
     return PluginRenderer(processor)
+
+@pytest.fixture
+def test_signal():
+    return sine(
+        frequency=1_000,
+        duration=1.0,
+        sample_rate=48_000,
+        amplitude=0.25,
+    )

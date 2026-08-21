@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from harness.signals import sine
+from harness.signals import *
 
 def test_sine_has_expected_shape():
     signal = sine(
@@ -104,3 +104,33 @@ def test_silence_is_zero():
 
      assert signal.shape == (2, 48_000)
      assert np.count_nonzero(signal) == 0
+
+def test_white_noise_is_deterministic():
+     first = white_noise(
+          duration=1.0,
+          sample_rate=48_000,
+          seed=1234,
+     )
+
+     second =white_noise(
+          duration=1.0,
+          sample_rate=48_000,
+          seed=1234,
+     )
+
+     np.testing.assert_array_equal(first, second)
+
+def test_different_noise_seeds_produce_different_signals():
+    first = white_noise(
+        duration=1.0,
+        sample_rate=48_000,
+        seed=1,
+    )
+
+    second = white_noise(
+        duration=1.0,
+        sample_rate=48_000,
+        seed=2,
+    )
+
+    assert not np.array_equal(first, second)
