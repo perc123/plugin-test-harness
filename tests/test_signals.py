@@ -26,30 +26,30 @@ def test_sine_has_expected_amplitude():
         abs=1e-5,
     )
 
-    def test_sine_is_deterministix():
-        first = sine(
+def test_sine_is_deterministic():
+    first = sine(
+        frequency=1_000,
+        duration=1.0,
+        sample_rate=48_000,
+        amplitude=0.25,
+    )
+
+    second = sine(
+        frequency=1_000,
+        duration=1.0,
+        sample_rate=48_000,
+        amplitude=0.25,
+    )
+
+    np.testing.assert_array_equal(first, second)
+
+def test_sine_support_multiple_chanels():
+        signal = sine(
             frequency=1_000,
             duration=1.0,
             sample_rate=48_000,
-            amplitude=0.25,
+            channels=2,
         )
 
-        second = sine(
-            frequency=1_000,
-            duration=1.0,
-            sample_rate=48_000,
-            amplitude=0.25,
-        )
-
-        np.testing.assert_array_equal(first, second)
-
-        def test_sine_support_multiple_chanels():
-            signal = sine(
-                frequency=1_000,
-                duration=1.0,
-                sample_rate=48_000,
-                channels=2,
-            )
-
-            assert signal.shape == (2, 48_000)
-            np.testing.assert_array_equal(signal[0], signal[1])
+        assert signal.shape == (2, 48_000)
+        np.testing.assert_array_equal(signal[0], signal[1])
