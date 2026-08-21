@@ -18,9 +18,16 @@ code (gain stages, filters, effects, etc.) without needing a real DAW.
   `harness.fake_plugin.FakeGainPlugin` is a minimal example (applies a
   fixed gain) used by the test suite; a real plugin wrapper (e.g. around
   a `pedalboard` VST/AU plugin) would implement the same interface.
+- **`harness.signals`** — generators for synthetic test signals: `sine`,
+  `impulse`, `silence`, and `white_noise`. Each returns a
+  `(channels, samples)` array and validates its own parameters
+  (raising `ValueError` on non-positive frequency/duration/sample_rate/
+  channels or negative amplitude).
 - **`tests/`** — pytest suite exercising `PluginRenderer` against
-  `FakeGainPlugin`: correct output shape/dtype, gain is applied, renders
-  are deterministic, reset behavior, and input validation.
+  `FakeGainPlugin` (correct output shape/dtype, gain is applied, renders
+  are deterministic, reset behavior, input validation) and
+  `harness.signals` (shape, amplitude, determinism, and parameter
+  validation for each generator).
 
 ## Audio representation
 
