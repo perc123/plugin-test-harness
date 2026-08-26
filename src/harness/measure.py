@@ -9,8 +9,11 @@ def peak_amplitude(audio: np.ndarray) -> float:
     """
 
     if audio.size == 0:
+        raise ValueError("audio must not be empty")
+
+    if not np.isfinite(audio).all():
         raise ValueError("audio contains non-finite values")
-    
+
     return float(np.max(np.abs(audio)))
 
 def rms(audio: np.ndarray) -> float:

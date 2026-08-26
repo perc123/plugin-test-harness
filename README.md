@@ -23,11 +23,17 @@ code (gain stages, filters, effects, etc.) without needing a real DAW.
   `(channels, samples)` array and validates its own parameters
   (raising `ValueError` on non-positive frequency/duration/sample_rate/
   channels or negative amplitude).
+- **`harness.measure`** — level measurements for audio arrays: `peak_amplitude`
+  and `rms` (linear scale), `amplitude_to_dbfs` and the `peak_dbfs`/`rms_dbfs`
+  convenience wrappers (dB scale, with a -600 dBFS floor instead of -inf for
+  silence). `peak_amplitude` and `rms` both raise `ValueError` on empty or
+  non-finite (`nan`/`inf`) input.
 - **`tests/`** — pytest suite exercising `PluginRenderer` against
   `FakeGainPlugin` (correct output shape/dtype, gain is applied, renders
-  are deterministic, reset behavior, input validation) and
-  `harness.signals` (shape, amplitude, determinism, and parameter
-  validation for each generator).
+  are deterministic, reset behavior, input validation), `harness.signals`
+  (shape, amplitude, determinism, and parameter validation for each
+  generator), and `harness.measure` (peak/RMS correctness, dBFS conversion,
+  and input validation).
 
 ## Audio representation
 
